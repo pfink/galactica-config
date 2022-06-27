@@ -1,0 +1,85 @@
+openhab_api_url: "http://localhost:8080/rest"
+#nuimo_mac_address: "E3:CF:57:6A:78:3E" # alter
+nuimo_mac_address: "e3:cf:57:6a:78:3e"
+#nuimo_mac_address: "CF:9D:EA:03:F2:9C" #kaputt
+bluetooth_adapter: hci1
+
+openhab_sitemap: "nuimoshowcase"
+openhab_batterylevel_item: "Nuimo_BatteryLevel"   # Name of the Number item that is updated with the battery level of the Nuimo
+openhab_autoupdate_sitemap: 60                    # Interval at that openHAB is being polled for sitemap configuration changes in seconds. To turn off autoupdate, use 0.
+openhab_slider_null_command: 0                    # Command that should be sent to the Slider if the item state is null
+
+rotation_icon: 2-digit-angular                    # Accepted values: 2-digit-angular, 2-digit-curved, circle
+rotation_icon_leading_zero: false                 # Only valid for digit rotation icons: Defines whether there is a leading zero for 1-digit numbers.
+rotation_sensitivity: 1.5                         # Defines the number revolutions the wheel needs to reach 100%.
+error_icon: "errorExclamationMark"                # The icon shown on the Nuimo if an error occurs during event handling. Recommended values: errorExclamationMark, errorX, errorSmiley
+
+log_file: "nuimo-openhab.log"
+log_level: INFO
+log_stdout: true
+
+# The key mapping in this example file contains 2 modes:
+# - the default mode which is used to control the currently the selected app / item
+# - the menue mode which allows to select other apps / items
+# The menue mode is active while the button is pressed.
+# So you can navigate between your apps / items as long as you hold the button.
+key_mapping:
+    # Default mode is mandatory and the initial key mapping after nuimo startup
+    default:
+      # The mode can be changed with the MENUE.CHANGEMODE=newmode command. "newmode" must be a mode that is listed in this key mapping
+      BUTTON_PRESS: "MENUE.CHANGEMODE=menue"
+      BUTTON_HOLD: "MENUE.SHOWAPP"
+      BUTTON_CLICK:
+        - "OPENHAB.Switch.TOGGLE"
+        - "OPENHAB.CustomSwitch.TOGGLEIFPLAYER"   # Workaround making default Player elements work without extra config. Toggles PLAY/PAUSE if it's a player element.
+      #SWIPE_UP: "MENUE.PARENT"
+      SWIPE_DOWN: "MENUE.SHOWBATTERYLEVEL"
+      SWIPE_LEFT:
+        - "OPENHAB.CustomSwitch.<<"               # Workaround making default Player elements work without extra config
+      SWIPE_RIGHT:
+        - "OPENHAB.CustomSwitch.>>"               # Workaround making default Player elements work without extra config
+      ROTATION: "OPENHAB.Slider.WHEELDIMMER"
+      TOUCH_BOTTOM: "MENUE.SHOWAPP"
+      TOUCH_LEFT: "MENUE.SHOWAPP"
+      TOUCH_RIGHT: "MENUE.SHOWAPP"
+    # More modes can be added here
+    menue:
+      SWIPE_UP: "MENUE.PARENT"
+      SWIPE_DOWN: "MENUE.CHILD"
+      SWIPE_LEFT: "MENUE.PREVIOUS"
+      SWIPE_RIGHT: "MENUE.NEXT"
+      BUTTON_RELEASE: "MENUE.CHANGEMODE=default"
+      ROTATION: "MENUE.WHEELNAVIGATION"
+
+# Maps icons to specific actions
+command_icon_mapping:
+    OPENHAB.CustomSwitch.NEXT: "next"
+    OPENHAB.CustomSwitch.PREVIOUS: "previous"
+    OPENHAB.CustomSwitch.PLAY: "play"
+    OPENHAB.CustomSwitch.PAUSE: "pause"
+    OPENHAB.CustomSwitch.ON: "poweron"
+    OPENHAB.CustomSwitch.OFF: "poweroff"
+    OPENHAB.Switch.ON: "poweron"
+    OPENHAB.Switch.OFF: "poweroff"
+    OPENHAB.Switch.100: "poweron"
+    OPENHAB.Switch.0: "poweroff"
+
+# Defines which command is executed on a TOGGLE action
+toggle_mapping:
+    "ON": "OFF"
+    "OFF": "ON"
+    "100": "0"
+    "0": "100"
+    PLAY: PAUSE
+    PAUSE: PLAY
+    UP: DOWN
+    DOWN: UP
+    OPEN: CLOSE
+    CLOSE: OPEN
+
+# Defines which command is executed if the state is NULL when toggling or sliding
+initial_command:
+    Dimmer: "0"
+    Switch: "ON"
+    Player: PLAY
+    Rollershutter: DOWN
