@@ -1,0 +1,2 @@
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{product}=="CP2102 USB to UART Bridge Controller", ATTRS{serial}=="0001", SYMLINK+="ttyMILIGHT1"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{product}=="CP2104 USB to UART Bridge Controller", ATTRS{serial}=="009F1CCB", SYMLINK+="ttyMILIGHT2"

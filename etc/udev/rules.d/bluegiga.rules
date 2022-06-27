@@ -1,0 +1,1 @@
+SUBSYSTEM=="tty", ATTRS{manufacturer}=="Bluegiga", SYMLINK+="ttyBLUEGIGA"
