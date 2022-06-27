@@ -1,0 +1,15 @@
+[Unit]
+Description=rfled-server Service
+
+Requires=network-online.target
+After=network-online.target dev-ttyUSB0.device dev-ttyUSB1.device wpa_supplicant@wlan0.service
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/rfled-server-python/source/main.py
+Environment=RFLED_CONFIG_PATH=/etc/milight/config.yml
+Type=simple
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

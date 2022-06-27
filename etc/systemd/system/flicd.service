@@ -1,0 +1,11 @@
+[Unit]
+Description=flicd Service
+
+Requires=network-online.target bluetooth.target
+After=network-online.target bluetooth.target wpa_supplicant@wlan0.service
+[Service]
+ExecStart=/opt/fliclib-linux-hci/bin/armv6l/flicd -f /opt/fliclib-linux-hci/bin/armv6l/flic.sqlite3 -s 0.0.0.0 -h hci0
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

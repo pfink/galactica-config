@@ -1,0 +1,14 @@
+[Unit]
+Description=rfled-server Service
+
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/root/.platformio/remote/projects/esp8266_milight_hub-a42db95a6ee98599616bcc6d5775be9a1a57bf91/.pio/build/pi3/program
+Type=simple
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
